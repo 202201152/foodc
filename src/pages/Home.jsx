@@ -43,11 +43,7 @@ const Home = () => {
 
     // Edit vendor
     const handleEdit = (vendor) => {
-        setForm({
-            name: vendor.name,
-            contactNumber: vendor.contactNumber,
-            location: vendor.location,
-        });
+        setForm({ name: vendor.name, contactNumber: vendor.contactNumber, location: vendor.location });
         setEditingId(vendor._id);
     };
 
@@ -63,18 +59,18 @@ const Home = () => {
     };
 
     return (
-        <div style={{ padding: "20px", fontFamily: "Arial" }}>
+        <div style={{ padding: "20px", fontFamily: "Arial", backgroundColor: "#009990", color: "#000", minHeight: "100vh" }}>
             <h1>Vendor Management</h1>
 
             {/* Form */}
-            <form onSubmit={handleSubmit} style={{ marginBottom: "20px" }}>
+            <form onSubmit={handleSubmit} style={{ marginBottom: "20px", display: "flex", flexWrap: "wrap", gap: "10px" }}>
                 <input
                     type="text"
                     placeholder="Name"
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
                     required
-                    style={{ marginRight: "10px", padding: "5px" }}
+                    style={{ padding: "5px", borderRadius: "5px", border: "1px solid #fff", backgroundColor: "#000", color: "#000" }}
                 />
                 <input
                     type="text"
@@ -82,7 +78,7 @@ const Home = () => {
                     value={form.contactNumber}
                     onChange={(e) => setForm({ ...form, contactNumber: e.target.value })}
                     required
-                    style={{ marginRight: "10px", padding: "5px" }}
+                    style={{ padding: "5px", borderRadius: "5px", border: "1px solid #fff", backgroundColor: "#000", color: "#fff" }}
                 />
                 <input
                     type="text"
@@ -90,9 +86,9 @@ const Home = () => {
                     value={form.location}
                     onChange={(e) => setForm({ ...form, location: e.target.value })}
                     required
-                    style={{ marginRight: "10px", padding: "5px" }}
+                    style={{ padding: "5px", borderRadius: "5px", border: "1px solid #fff", backgroundColor: "#000", color: "#fff" }}
                 />
-                <button type="submit" style={{ padding: "6px 12px" }}>
+                <button type="submit" style={{ padding: "6px 12px", borderRadius: "5px", backgroundColor: "#444", color: "#fff", border: "1px solid #fff" }}>
                     {editingId ? "Update Vendor" : "Add Vendor"}
                 </button>
                 {editingId && (
@@ -102,7 +98,7 @@ const Home = () => {
                             setForm({ name: "", contactNumber: "", location: "" });
                             setEditingId(null);
                         }}
-                        style={{ marginLeft: "10px", padding: "6px 12px" }}
+                        style={{ marginLeft: "10px", padding: "6px 12px", borderRadius: "5px", backgroundColor: "#444", color: "#fff", border: "1px solid #fff" }}
                     >
                         Cancel
                     </button>
@@ -114,31 +110,29 @@ const Home = () => {
             {loading ? (
                 <p>Loading vendors...</p>
             ) : (
-                <table border="1" cellPadding="8" style={{ borderCollapse: "collapse", width: "100%" }}>
+                <table style={{ borderCollapse: "collapse", width: "100%", border: "1px solid #fff" }}>
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Contact</th>
-                            <th>Location</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                            <th style={{ border: "1px solid #fff", padding: "8px" }}>Name</th>
+                            <th style={{ border: "1px solid #fff", padding: "8px" }}>Contact</th>
+                            <th style={{ border: "1px solid #fff", padding: "8px" }}>Location</th>
+                            <th style={{ border: "1px solid #fff", padding: "8px" }}>Status</th>
+                            <th style={{ border: "1px solid #fff", padding: "8px" }}>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {vendors.length > 0 ? (
                             vendors.map((v) => (
                                 <tr key={v._id}>
-                                    <td>{v.name}</td>
-                                    <td>{v.contactNumber}</td>
-                                    <td>{v.location}</td>
-                                    <td style={{ color: v.status === "Inactive" ? "red" : "green" }}>
-                                        {v.status}
-                                    </td>
-                                    <td>
-                                        <button onClick={() => handleEdit(v)} style={{ marginRight: "10px" }}>
+                                    <td style={{ border: "1px solid #fff", padding: "8px" }}>{v.name}</td>
+                                    <td style={{ border: "1px solid #fff", padding: "8px" }}>{v.contactNumber}</td>
+                                    <td style={{ border: "1px solid #fff", padding: "8px" }}>{v.location}</td>
+                                    <td style={{ border: "1px solid #fff", padding: "8px", color: v.status === "Inactive" ? "red" : "lime" }}>{v.status}</td>
+                                    <td style={{ border: "1px solid #fff", padding: "8px" }}>
+                                        <button onClick={() => handleEdit(v)} style={{ marginRight: "10px", padding: "4px 8px", borderRadius: "5px", backgroundColor: "#444", color: "#fff", border: "1px solid #fff" }}>
                                             Edit
                                         </button>
-                                        <button onClick={() => handleDelete(v._id)} style={{ color: "red" }}>
+                                        <button onClick={() => handleDelete(v._id)} style={{ padding: "4px 8px", borderRadius: "5px", backgroundColor: "#444", color: "#fff", border: "1px solid #fff" }}>
                                             Delete
                                         </button>
                                     </td>
@@ -146,7 +140,7 @@ const Home = () => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="5">No vendors found</td>
+                                <td colSpan="5" style={{ border: "1px solid #fff", padding: "8px", textAlign: "center" }}>No vendors found</td>
                             </tr>
                         )}
                     </tbody>
