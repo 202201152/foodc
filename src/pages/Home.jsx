@@ -7,6 +7,20 @@ const Home = () => {
     const [editingId, setEditingId] = useState(null);
     const [loading, setLoading] = useState(false);
 
+    // Predefined 10 major Indian cities
+    const cities = [
+        "Mumbai",
+        "Delhi",
+        "Bengaluru",
+        "Hyderabad",
+        "Chennai",
+        "Kolkata",
+        "Pune",
+        "Ahmedabad",
+        "Jaipur",
+        "Lucknow",
+    ];
+
     // Fetch vendors
     const fetchVendors = async () => {
         setLoading(true);
@@ -59,18 +73,47 @@ const Home = () => {
     };
 
     return (
-        <div style={{ padding: "20px", fontFamily: "Arial", backgroundColor: "#009990", color: "#000", minHeight: "100vh" }}>
-            <h1>Vendor Management</h1>
+        <div
+            style={{
+                padding: "30px",
+                fontFamily: "'Inter', sans-serif",
+                background: "linear-gradient(135deg, #f8fafc, #eef2f7)",
+                minHeight: "100vh",
+                color: "#333",
+            }}
+        >
+            <h1 style={{ marginBottom: "20px", color: "#1e293b", fontSize: "28px" }}>Vendor Management</h1>
 
             {/* Form */}
-            <form onSubmit={handleSubmit} style={{ marginBottom: "20px", display: "flex", flexWrap: "wrap", gap: "10px" }}>
+            <form
+                onSubmit={handleSubmit}
+                style={{
+                    marginBottom: "25px",
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "12px",
+                    background: "#fff",
+                    padding: "15px",
+                    borderRadius: "12px",
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+                }}
+            >
                 <input
                     type="text"
                     placeholder="Name"
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
                     required
-                    style={{ padding: "5px", borderRadius: "5px", border: "1px solid #fff", backgroundColor: "#000", color: "#000" }}
+                    style={{
+                        flex: "1",
+                        padding: "10px",
+                        border: "1px solid #cbd5e1",
+                        borderRadius: "8px",
+                        outline: "none",
+                        transition: "0.2s",
+                    }}
+                    onFocus={(e) => (e.target.style.borderColor = "#3b82f6")}
+                    onBlur={(e) => (e.target.style.borderColor = "#cbd5e1")}
                 />
                 <input
                     type="text"
@@ -78,17 +121,59 @@ const Home = () => {
                     value={form.contactNumber}
                     onChange={(e) => setForm({ ...form, contactNumber: e.target.value })}
                     required
-                    style={{ padding: "5px", borderRadius: "5px", border: "1px solid #fff", backgroundColor: "#000", color: "#fff" }}
+                    style={{
+                        flex: "1",
+                        padding: "10px",
+                        border: "1px solid #cbd5e1",
+                        borderRadius: "8px",
+                        outline: "none",
+                        transition: "0.2s",
+                    }}
+                    onFocus={(e) => (e.target.style.borderColor = "#3b82f6")}
+                    onBlur={(e) => (e.target.style.borderColor = "#cbd5e1")}
                 />
-                <input
-                    type="text"
-                    placeholder="Location"
+
+                {/* Location dropdown */}
+                <select
                     value={form.location}
                     onChange={(e) => setForm({ ...form, location: e.target.value })}
                     required
-                    style={{ padding: "5px", borderRadius: "5px", border: "1px solid #fff", backgroundColor: "#000", color: "#fff" }}
-                />
-                <button type="submit" style={{ padding: "6px 12px", borderRadius: "5px", backgroundColor: "#444", color: "#fff", border: "1px solid #fff" }}>
+                    style={{
+                        flex: "1",
+                        padding: "10px",
+                        border: "1px solid #cbd5e1",
+                        borderRadius: "8px",
+                        outline: "none",
+                        transition: "0.2s",
+                        background: "#fff",
+                    }}
+                    onFocus={(e) => (e.target.style.borderColor = "#3b82f6")}
+                    onBlur={(e) => (e.target.style.borderColor = "#cbd5e1")}
+                >
+                    <option value="" disabled>
+                        Select Location
+                    </option>
+                    {cities.map((city) => (
+                        <option key={city} value={city}>
+                            {city}
+                        </option>
+                    ))}
+                </select>
+
+                <button
+                    type="submit"
+                    style={{
+                        padding: "10px 18px",
+                        background: "#3b82f6",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "8px",
+                        cursor: "pointer",
+                        transition: "0.2s",
+                    }}
+                    onMouseEnter={(e) => (e.target.style.background = "#2563eb")}
+                    onMouseLeave={(e) => (e.target.style.background = "#3b82f6")}
+                >
                     {editingId ? "Update Vendor" : "Add Vendor"}
                 </button>
                 {editingId && (
@@ -98,7 +183,17 @@ const Home = () => {
                             setForm({ name: "", contactNumber: "", location: "" });
                             setEditingId(null);
                         }}
-                        style={{ marginLeft: "10px", padding: "6px 12px", borderRadius: "5px", backgroundColor: "#444", color: "#fff", border: "1px solid #fff" }}
+                        style={{
+                            padding: "10px 18px",
+                            background: "#e2e8f0",
+                            color: "#1e293b",
+                            border: "none",
+                            borderRadius: "8px",
+                            cursor: "pointer",
+                            transition: "0.2s",
+                        }}
+                        onMouseEnter={(e) => (e.target.style.background = "#cbd5e1")}
+                        onMouseLeave={(e) => (e.target.style.background = "#e2e8f0")}
                     >
                         Cancel
                     </button>
@@ -106,33 +201,71 @@ const Home = () => {
             </form>
 
             {/* Vendor List */}
-            <h2>Vendors</h2>
+            <h2 style={{ marginBottom: "15px", color: "#334155", fontSize: "22px" }}>Vendors</h2>
             {loading ? (
                 <p>Loading vendors...</p>
             ) : (
-                <table style={{ borderCollapse: "collapse", width: "100%", border: "1px solid #fff" }}>
-                    <thead>
+                <table
+                    style={{
+                        width: "100%",
+                        borderCollapse: "collapse",
+                        background: "#fff",
+                        borderRadius: "12px",
+                        overflow: "hidden",
+                        boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+                    }}
+                >
+                    <thead style={{ background: "#f1f5f9", textAlign: "left" }}>
                         <tr>
-                            <th style={{ border: "1px solid #fff", padding: "8px" }}>Name</th>
-                            <th style={{ border: "1px solid #fff", padding: "8px" }}>Contact</th>
-                            <th style={{ border: "1px solid #fff", padding: "8px" }}>Location</th>
-                            <th style={{ border: "1px solid #fff", padding: "8px" }}>Status</th>
-                            <th style={{ border: "1px solid #fff", padding: "8px" }}>Actions</th>
+                            <th style={{ padding: "12px" }}>Name</th>
+                            <th style={{ padding: "12px" }}>Contact</th>
+                            <th style={{ padding: "12px" }}>Location</th>
+                            <th style={{ padding: "12px" }}>Status</th>
+                            <th style={{ padding: "12px" }}>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {vendors.length > 0 ? (
                             vendors.map((v) => (
-                                <tr key={v._id}>
-                                    <td style={{ border: "1px solid #fff", padding: "8px" }}>{v.name}</td>
-                                    <td style={{ border: "1px solid #fff", padding: "8px" }}>{v.contactNumber}</td>
-                                    <td style={{ border: "1px solid #fff", padding: "8px" }}>{v.location}</td>
-                                    <td style={{ border: "1px solid #fff", padding: "8px", color: v.status === "Inactive" ? "red" : "lime" }}>{v.status}</td>
-                                    <td style={{ border: "1px solid #fff", padding: "8px" }}>
-                                        <button onClick={() => handleEdit(v)} style={{ marginRight: "10px", padding: "4px 8px", borderRadius: "5px", backgroundColor: "#444", color: "#fff", border: "1px solid #fff" }}>
+                                <tr key={v._id} style={{ borderBottom: "1px solid #e2e8f0" }}>
+                                    <td style={{ padding: "12px" }}>{v.name}</td>
+                                    <td style={{ padding: "12px" }}>{v.contactNumber}</td>
+                                    <td style={{ padding: "12px" }}>{v.location}</td>
+                                    <td style={{ padding: "12px", color: v.status === "Inactive" ? "#ef4444" : "#16a34a" }}>
+                                        {v.status}
+                                    </td>
+                                    <td style={{ padding: "12px" }}>
+                                        <button
+                                            onClick={() => handleEdit(v)}
+                                            style={{
+                                                marginRight: "10px",
+                                                padding: "6px 12px",
+                                                border: "none",
+                                                borderRadius: "6px",
+                                                background: "#3b82f6",
+                                                color: "#fff",
+                                                cursor: "pointer",
+                                                transition: "0.2s",
+                                            }}
+                                            onMouseEnter={(e) => (e.target.style.background = "#2563eb")}
+                                            onMouseLeave={(e) => (e.target.style.background = "#3b82f6")}
+                                        >
                                             Edit
                                         </button>
-                                        <button onClick={() => handleDelete(v._id)} style={{ padding: "4px 8px", borderRadius: "5px", backgroundColor: "#444", color: "#fff", border: "1px solid #fff" }}>
+                                        <button
+                                            onClick={() => handleDelete(v._id)}
+                                            style={{
+                                                padding: "6px 12px",
+                                                border: "none",
+                                                borderRadius: "6px",
+                                                background: "#f87171",
+                                                color: "#fff",
+                                                cursor: "pointer",
+                                                transition: "0.2s",
+                                            }}
+                                            onMouseEnter={(e) => (e.target.style.background = "#dc2626")}
+                                            onMouseLeave={(e) => (e.target.style.background = "#f87171")}
+                                        >
                                             Delete
                                         </button>
                                     </td>
@@ -140,7 +273,9 @@ const Home = () => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="5" style={{ border: "1px solid #fff", padding: "8px", textAlign: "center" }}>No vendors found</td>
+                                <td colSpan="5" style={{ padding: "12px", textAlign: "center", color: "#64748b" }}>
+                                    No vendors found
+                                </td>
                             </tr>
                         )}
                     </tbody>
